@@ -1,0 +1,1 @@
+# blueprint-get-external-resource
