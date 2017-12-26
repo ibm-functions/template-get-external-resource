@@ -36,6 +36,7 @@ class HelloTests extends TestHelpers
 
     //set parameters for deploy tests
     val nodejsfolder = "../runtimes/nodejs/actions";
+    val pythonfolder = "../runtimes/python/actions";
 
     behavior of "Get External Resource Blueprint"
 
@@ -50,7 +51,9 @@ class HelloTests extends TestHelpers
        }
 
        withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
-         _.response.result.get.toString should include("Paris")
+         activation =>
+          activation.response.success shouldBe true
+          activation.response.result.get.toString should include("temp")
        }
      }
       it should "invoke weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
@@ -61,7 +64,38 @@ class HelloTests extends TestHelpers
         }
 
         withActivation(wsk.activation, wsk.action.invoke(name)) {
-          _.response.result.get.toString should include("Vermont")
+          activation =>
+           activation.response.success shouldBe true
+           activation.response.result.get.toString should include("temp")
         }
       }
+      /**
+       * Test the python "Get External Resource" blueprint
+       */
+       it should "invoke weather.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+         val name = "weatherPython"
+         val file = Some(new File(pythonfolder, "weather.py").toString());
+         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+           action.create(name, file)
+         }
+
+         withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
+           activation =>
+            activation.response.success shouldBe true
+            activation.response.result.get.toString should include("temp")
+          }
+       }
+        it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+          val name = "weatherPython"
+          val file = Some(new File(pythonfolder, "weather.py").toString());
+          assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+            action.create(name, file)
+          }
+
+          withActivation(wsk.activation, wsk.action.invoke(name)) {
+            activation =>
+             activation.response.success shouldBe true
+             activation.response.result.get.toString should include("temp")
+          }
+        }
 }
