@@ -4,11 +4,18 @@
   "description": "This action will accept a single parameter, which must be a JSON object.",
   "long_description": "This action will accept a single parameter, which must be a JSON object.",
   "url": "https://github.com/pritidesai/blueprint-get-external-resource",
-  "runtime": {
-    "name": "Node.js 6",
-    "kind": "nodejs:6",
-    "type": "nodejs"
-  },
+  "runtimes": [
+    {
+      "name": "Node.js 6",
+      "kind": "nodejs:6",
+      "type": "nodejs"
+    },
+    {
+      "name": "Python 3",
+      "kind": "python:3",
+      "type": "python",
+    },
+  ],
   "categories": [
     "nodejs",
   ]
