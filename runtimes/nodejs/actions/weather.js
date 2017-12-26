@@ -1,15 +1,14 @@
 /**
-  *
   * main() will be invoked when you Run This Action.
   *
-  * @param Cloud Functions actions accept a single parameter,
-  *        which must be a JSON object.
+  * When enabled as a Web Action, use the following URL to invoke this action:
+  * https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}?location=Austin
+  *
+  * For example:
+  * https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/Get%20Resource/weather?location=Austin
   *
   * In this case, the params variable will look like:
-  *     { "message": "xxxx" }
-  *
-  * @return which must be a JSON object.
-  *         It will be the output of this action.
+  *     { "location": "Austin" }
   *
   */
 
@@ -22,12 +21,18 @@ function main(params) {
     return new Promise(function(resolve, reject) {
         request.get(url, function(error, response, body) {
             if (error) {
-                reject(error);
+                reject({
+                    statusCode: 500,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: {'message': 'Error processing your request'}
+                });
             }
             else {
-                /** the response body contains temperature in condition.temp, for example, 20
-                  * and short description in condition.text for example, Partly Cloudy
-                  * and date in condition.date, for example, Thu, 21 Dec 2017 06:00 PM EST
+                /** The response body contains temperature data in the following format
+                 *    { code: '28',
+                 *    date: 'Tue, 26 Dec 2017 12:00 PM EST',
+                 *    temp: '18',
+                 *    text: 'Mostly Cloudy' } }
                   */
                 resolve({
                     statusCode: 200,
@@ -39,3 +44,4 @@ function main(params) {
     });
 }
 
+exports.main = main;
