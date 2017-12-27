@@ -9,8 +9,8 @@ You can use the wskdeploy tool to deploy this asset yourself using the manifest 
 
 You can invoke this asset via web using `curl https://openwhisk.ng.bluemix.net/api/v1/web/<namespace>/$PACKAGE_NAME/weather?location=Paris`
 
-For example
-`curl https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/Get%20Resource/weather?location=Austin
+For example:
+`curl https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/Get%20Resource/weather?location=Austin`
 
 ### Available Languages
 This blueprint is available in node.js.
