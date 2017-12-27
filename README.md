@@ -13,4 +13,4 @@ For example:
 `curl https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/Get%20Resource/weather?location=Austin`
 
 ### Available Languages
-This blueprint is available in node.js.
+This blueprint is available in node.js and python.
