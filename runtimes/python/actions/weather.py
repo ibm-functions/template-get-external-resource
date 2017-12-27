@@ -7,7 +7,7 @@ import requests
 # https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}?location=Austin
 #
 # For example:
-# https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/Get%20Resource/weather?location=Austin
+# https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/get-resource/weather?location=Austin
 #
 # In this case, the params variable will look like:
 # { "location": "Austin" }
