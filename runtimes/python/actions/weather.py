@@ -16,7 +16,8 @@ def main(params):
     if 'location' not in params:
         params.update({'location': 'Austin'})
     location = params['location']
-    url = """https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast where woeid in (select woeid from geo.places(1) where text='%s')&format=json""" % location
+    url = ("https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast "
+    """where woeid in (select woeid from geo.places(1) where text='%s')&format=json""" % location)
     r = requests.get(url)
     print(r.json()['query']['results']['channel']['item']['condition'])
     if r.status_code != 200:
