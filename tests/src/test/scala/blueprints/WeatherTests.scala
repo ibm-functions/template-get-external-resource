@@ -27,7 +27,7 @@ import spray.json.DefaultJsonProtocol.StringJsonFormat
 import spray.json.pimpAny
 
 @RunWith(classOf[JUnitRunner])
-class HelloTests extends TestHelpers
+class WeatherTests extends TestHelpers
     with WskTestHelpers
     with BeforeAndAfterAll {
 
