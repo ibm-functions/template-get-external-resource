@@ -3,7 +3,7 @@
   "name": "Get External Resource",
   "description": "This action will accept a single parameter, which must be a JSON object.",
   "long_description": "This action will accept a single parameter, which must be a JSON object.",
-  "url": "https://github.com/pritidesai/blueprint-get-external-resource",
+  "url": "https://github.com/ibm-functions/template-get-external-resource",
   "runtimes": [
     {
       "name": "Node.js 6",
