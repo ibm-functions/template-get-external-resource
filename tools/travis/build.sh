@@ -53,5 +53,5 @@ cd $DEPLOYDIR/packages
 source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 
 # Test
-cd $ROOTDIR/blueprint-get-external-resource
+cd $ROOTDIR/template-get-external-resource
 ./gradlew :tests:test

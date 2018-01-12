@@ -38,10 +38,10 @@ class WeatherTests extends TestHelpers
     val nodejsfolder = "../runtimes/nodejs/actions";
     val pythonfolder = "../runtimes/python/actions";
 
-    behavior of "Get External Resource Blueprint"
+    behavior of "Get External Resource Template"
 
     /**
-     * Test the nodejs "Get External Resource" blueprint
+     * Test the nodejs "Get External Resource" template
      */
      it should "invoke weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
        val name = "weatherNode"
@@ -70,7 +70,7 @@ class WeatherTests extends TestHelpers
         }
       }
       /**
-       * Test the python "Get External Resource" blueprint
+       * Test the python "Get External Resource" template
        */
        it should "invoke weather.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
          val name = "weatherPython"
