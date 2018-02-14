@@ -1,0 +1,19 @@
+# Wskdeploy manifest for Get External Resource - weather
+
+# Deployment using this manifest file creates the following OpenWhisk components:
+#   Package:  openwhisk-get-external-resource
+#   Action:   openwhisk-get-external-resource/weather.js
+#
+# The action can be invoked using:
+# curl https://openwhisk.ng.bluemix.net/api/v1/web/<namespace>/openwhisk-get-external-resource/weather.json?location=<location>
+
+packages:
+    $PACKAGE_NAME:
+        version: 1.0
+        license: Apache-2.0
+        namespace: _
+        actions:
+            weather:
+                web-export: true
+                function: actions/weather.js
+                runtime: nodejs:6
