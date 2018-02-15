@@ -35,17 +35,18 @@ class WeatherTests extends TestHelpers
     val wsk = new Wsk()
 
     //set parameters for deploy tests
-    val nodejsfolder = "../runtimes/nodejs/actions";
+    val nodejs6folder = "../runtimes/nodejs-6/actions";
+    val nodejs8folder = "../runtimes/nodejs-8/actions";
     val pythonfolder = "../runtimes/python/actions";
 
     behavior of "Get External Resource Template"
 
     /**
-     * Test the nodejs "Get External Resource" template
+     * Test the nodejs 6 "Get External Resource" template
      */
-     it should "invoke weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+     it should "invoke nodejs-6 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
        val name = "weatherNode"
-       val file = Some(new File(nodejsfolder, "weather.js").toString());
+       val file = Some(new File(nodejs6folder, "weather.js").toString());
        assetHelper.withCleaner(wsk.action, name) { (action, _) =>
          action.create(name, file)
        }
@@ -58,7 +59,7 @@ class WeatherTests extends TestHelpers
      }
       it should "invoke weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
         val name = "weatherNode"
-        val file = Some(new File(nodejsfolder, "weather.js").toString());
+        val file = Some(new File(nodejs6folder, "weather.js").toString());
         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
           action.create(name, file)
         }
@@ -69,6 +70,36 @@ class WeatherTests extends TestHelpers
            activation.response.result.get.toString should include("temp")
         }
       }
+
+      /**
+       * Test the nodejs-8 "Get External Resource" template
+       */
+       it should "invoke nodejs-8 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+         val name = "weatherNode"
+         val file = Some(new File(nodejsfolder, "weather.js").toString());
+         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+           action.create(name, file)
+         }
+
+         withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
+           activation =>
+            activation.response.success shouldBe true
+            activation.response.result.get.toString should include("temp")
+         }
+       }
+        it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+          val name = "weatherNode"
+          val file = Some(new File(nodejsfolder, "weather.js").toString());
+          assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+            action.create(name, file)
+          }
+
+          withActivation(wsk.activation, wsk.action.invoke(name)) {
+            activation =>
+             activation.response.success shouldBe true
+             activation.response.result.get.toString should include("temp")
+          }
+        }
       /**
        * Test the python "Get External Resource" template
        */
