@@ -16,3 +16,4 @@ packages:
             weather:
                 web-export: true
                 function: actions/weather.py
+                runtime: python-jessie:3
