@@ -10,9 +10,6 @@ cd $WHISKDIR
 
 tools/build/scanCode.py "$SCRIPTDIR/../.."
 
-# No point to continue with PRs, since encryption is on
-if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then exit 0; fi
-
 cd $WHISKDIR/ansible
 
 ANSIBLE_CMD="ansible-playbook -i environments/local"
@@ -48,9 +45,13 @@ EDGE_HOST=$(grep '^edge.host=' $WHISKPROPS_FILE | cut -d'=' -f2)
 # Set Environment
 export OPENWHISK_HOME=$WHISKDIR
 
+# Place this template in correct location to be included in packageDeploy
+mkdir -p $PACKAGESDIR/preInstalled/ibm-functions
+cp -r $ROOTDIR/template-get-external-resource $PACKAGESDIR/preInstalled/ibm-functions/
+
 # Install the package
-cd $DEPLOYDIR/packages
-source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
+cd $PACKAGESDIR/packageDeploy/packages
+source $PACKAGESDIR/packageDeploy/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 
 # Test
 cd $ROOTDIR/template-get-external-resource
