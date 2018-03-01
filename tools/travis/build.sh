@@ -28,7 +28,6 @@ cd $WHISKDIR/ansible
 
 $ANSIBLE_CMD wipe.yml
 $ANSIBLE_CMD openwhisk.yml
-$ANSIBLE_CMD postdeploy.yml
 
 cd $WHISKDIR
 
