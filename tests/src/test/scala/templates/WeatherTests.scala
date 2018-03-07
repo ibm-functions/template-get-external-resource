@@ -39,7 +39,7 @@ class WeatherTests extends TestHelpers
     implicit val wskprops = WskProps()
     val wsk = new Wsk()
 
-    val deployTestRepo = "https://github.com/ibm-functions/template-hello-world"
+    val deployTestRepo = "https://github.com/ibm-functions/template-get-external-resource"
     val getExternalResourceActionPackage = "myPackage/weather"
     val deployAction = "/whisk.system/deployWeb/wskdeploy"
     val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
