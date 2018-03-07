@@ -87,9 +87,9 @@ class WeatherTests extends TestHelpers
         "wskAuth" -> JsString(wskprops.authKey)
       ), successStatus, 200);
 
-      // withActivation(wsk.activation, wsk.action.invoke(getExternalResourceActionPackage)) {
-      //   _.response.result.get.toString should include("temp")
-      // }
+      withActivation(wsk.activation, wsk.action.invoke(getExternalResourceActionPackage)) {
+        _.response.result.get.toString should include("temp")
+      }
 
       val action = wsk.action.get(getExternalResourceActionPackage)
       verifyAction(action, getExternalResourceActionPackage, nodejs8kind)

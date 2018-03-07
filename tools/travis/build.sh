@@ -4,7 +4,7 @@
 SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 ROOTDIR="$SCRIPTDIR/../../.."
 WHISKDIR="$ROOTDIR/openwhisk"
-DEPLOYDIR="$ROOTDIR/packageDeploy"
+PACKAGESDIR="$WHISKDIR/catalog/extra-packages"
 
 cd $WHISKDIR
 
@@ -24,7 +24,6 @@ cd $WHISKDIR
 ./gradlew distDocker
 
 cd $WHISKDIR/ansible
-
 
 $ANSIBLE_CMD wipe.yml
 $ANSIBLE_CMD openwhisk.yml
