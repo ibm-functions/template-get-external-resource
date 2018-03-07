@@ -168,7 +168,6 @@ class WeatherTests extends TestHelpers
            activation.response.result.get.toString should include("temp")
         }
       }
-
       /**
        * Test the nodejs-8 "Get External Resource" template
        */
