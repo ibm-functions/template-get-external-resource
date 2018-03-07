@@ -66,7 +66,7 @@ class WeatherTests extends TestHelpers
           .post(deployActionURL)
       assert(response.statusCode() == expectedCode)
       response.body.asString should include(expectedResult)
-      // response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
+      response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
     }
 
     def verifyAction(action: RunResult, name: String, kindValue: JsString): Unit = {
