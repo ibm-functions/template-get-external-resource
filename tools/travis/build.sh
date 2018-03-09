@@ -5,6 +5,7 @@ SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 ROOTDIR="$SCRIPTDIR/../../.."
 WHISKDIR="$ROOTDIR/openwhisk"
 DEPLOYDIR="$ROOTDIR/packageDeploy"
+IMAGE_PREFIX="testing"
 
 cd $WHISKDIR
 
@@ -12,7 +13,7 @@ tools/build/scanCode.py "$SCRIPTDIR/../.."
 
 cd $WHISKDIR/ansible
 
-ANSIBLE_CMD="ansible-playbook -i environments/local"
+ANSIBLE_CMD="ansible-playbook -i environments/local -e docker_image_prefix=${IMAGE_PREFIX}"
 
 $ANSIBLE_CMD setup.yml
 $ANSIBLE_CMD prereq.yml
@@ -22,6 +23,9 @@ $ANSIBLE_CMD initdb.yml
 cd $WHISKDIR
 
 ./gradlew distDocker
+
+docker pull ibmfunctions/action-nodejs-v8
+docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
 
 cd $WHISKDIR/ansible
 
