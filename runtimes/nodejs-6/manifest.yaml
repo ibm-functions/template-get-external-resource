@@ -15,5 +15,5 @@ packages:
         actions:
             weather:
                 web-export: true
-                function: actions/weather.py
-                runtime: python-jessie:3
+                function: actions/weather.js
+                runtime: nodejs:6
