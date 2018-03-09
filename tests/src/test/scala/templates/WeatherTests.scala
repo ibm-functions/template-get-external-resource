@@ -57,7 +57,7 @@ class WeatherTests extends TestHelpers
           activation.response.result.get.toString should include("temp")
        }
      }
-      it should "invoke nodejs-6 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+     it should "invoke nodejs-6 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
         val name = "weatherNode6"
         val file = Some(new File(nodejs6folder, "weather.js").toString());
         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
@@ -102,6 +102,7 @@ class WeatherTests extends TestHelpers
              activation.response.result.get.toString should include("temp")
           }
         }
+      
       /**
        * Test the python "Get External Resource" template
        */
