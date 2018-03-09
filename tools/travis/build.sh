@@ -25,7 +25,7 @@ cd $WHISKDIR
 ./gradlew distDocker
 
 docker pull ibmfunctions/action-nodejs-v8
-docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
+docker tag ibmfunctions/action-nodejs-v8 whisk/action-nodejs-v8:latest
 
 cd $WHISKDIR/ansible
 
