@@ -76,10 +76,9 @@ class WeatherTests extends TestHelpers
        */
        it should "invoke nodejs-8 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
          val name = "weatherNode8"
-         val kind = Some("nodejs:8")
          val file = Some(new File(nodejs8folder, "weather.js").toString());
          assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-           action.create(name, file, kind)
+           action.create(name, file, kind = Some("nodejs:8"))
          }
 
          withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
@@ -90,10 +89,9 @@ class WeatherTests extends TestHelpers
        }
         it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
           val name = "weatherNode8"
-          val kind = Some("nodejs:8")
           val file = Some(new File(nodejs8folder, "weather.js").toString());
           assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-            action.create(name, file, kind)
+            action.create(name, file, kind = Some("nodejs:8"))
           }
 
           withActivation(wsk.activation, wsk.action.invoke(name)) {
