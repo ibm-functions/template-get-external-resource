@@ -58,23 +58,6 @@ class WeatherTests extends TestHelpers
     // statuses from deployWeb
     val successStatus = """"status":"success""""
 
-    def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
-      val response = RestAssured.given()
-          .contentType("application/json\r\n")
-          .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
-          .body(params.toString())
-          .post(deployActionURL)
-      assert(response.statusCode() == expectedCode)
-      response.body.asString should include(expectedResult)
-      response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
-    }
-
-    def verifyAction(action: RunResult, name: String, kindValue: JsString): Unit = {
-      val stdout = action.stdout
-      assert(stdout.startsWith(s"ok: got action $name\n"))
-      wsk.parseJsonString(stdout).fields("exec").asJsObject.fields("kind") shouldBe kindValue
-    }
-
     behavior of "Get External Resource Template"
 
     // test to create the get external resource template from github url.  Will use preinstalled folder.
@@ -146,7 +129,7 @@ class WeatherTests extends TestHelpers
        val name = "weatherNode6"
        val file = Some(new File(nodejs6folder, "weather.js").toString());
        assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-         action.create(name, file)
+         action.create(name, file, kind = Some(nodejs6kind))
        }
 
        withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
@@ -159,7 +142,7 @@ class WeatherTests extends TestHelpers
         val name = "weatherNode6"
         val file = Some(new File(nodejs6folder, "weather.js").toString());
         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-          action.create(name, file)
+          action.create(name, file, kind = Some(nodejs6kind))
         }
 
         withActivation(wsk.activation, wsk.action.invoke(name)) {
@@ -169,63 +152,81 @@ class WeatherTests extends TestHelpers
         }
       }
 
-      /**
-       * Test the nodejs-8 "Get External Resource" template
-       */
-       it should "invoke nodejs-8 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-         val name = "weatherNode8"
-         val file = Some(new File(nodejs8folder, "weather.js").toString());
-         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-           action.create(name, file, kind = Some("nodejs:8"))
-         }
-
-         withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
-           activation =>
-            activation.response.success shouldBe true
-            activation.response.result.get.toString should include("temp")
-         }
+    /**
+     * Test the nodejs-8 "Get External Resource" template
+     */
+     it should "invoke nodejs-8 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+       val name = "weatherNode8"
+       val file = Some(new File(nodejs8folder, "weather.js").toString());
+       assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+         action.create(name, file, kind = Some(nodejs8kind))
        }
-        it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-          val name = "weatherNode8"
-          val file = Some(new File(nodejs8folder, "weather.js").toString());
-          assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-            action.create(name, file, kind = Some("nodejs:8"))
-          }
 
-          withActivation(wsk.activation, wsk.action.invoke(name)) {
-            activation =>
-             activation.response.success shouldBe true
-             activation.response.result.get.toString should include("temp")
-          }
+       withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
+         activation =>
+          activation.response.success shouldBe true
+          activation.response.result.get.toString should include("temp")
+       }
+     }
+      it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+        val name = "weatherNode8"
+        val file = Some(new File(nodejs8folder, "weather.js").toString());
+        assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+          action.create(name, file, kind = Some(nodejs8kind))
         }
 
-      /**
-       * Test the python "Get External Resource" template
-       */
-       it should "invoke weather.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-         val name = "weatherPython"
-         val file = Some(new File(pythonfolder, "weather.py").toString());
-         assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-           action.create(name, file)
-         }
-
-         withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
-           activation =>
-            activation.response.success shouldBe true
-            activation.response.result.get.toString should include("temp")
-          }
-       }
-        it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-          val name = "weatherPython"
-          val file = Some(new File(pythonfolder, "weather.py").toString());
-          assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-            action.create(name, file)
-          }
-
-          withActivation(wsk.activation, wsk.action.invoke(name)) {
-            activation =>
-             activation.response.success shouldBe true
-             activation.response.result.get.toString should include("temp")
-          }
+        withActivation(wsk.activation, wsk.action.invoke(name)) {
+          activation =>
+           activation.response.success shouldBe true
+           activation.response.result.get.toString should include("temp")
         }
+      }
+
+    /**
+     * Test the python "Get External Resource" template
+     */
+     it should "invoke weather.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+       val name = "weatherPython"
+       val file = Some(new File(pythonfolder, "weather.py").toString());
+       assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+         action.create(name, file, kind = Some(pythonkind))
+       }
+
+       withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
+         activation =>
+          activation.response.success shouldBe true
+          activation.response.result.get.toString should include("temp")
+        }
+     }
+      it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
+        val name = "weatherPython"
+        val file = Some(new File(pythonfolder, "weather.py").toString());
+        assetHelper.withCleaner(wsk.action, name) { (action, _) =>
+          action.create(name, file, kind = Some(pythonkind))
+        }
+
+        withActivation(wsk.activation, wsk.action.invoke(name)) {
+          activation =>
+           activation.response.success shouldBe true
+           activation.response.result.get.toString should include("temp")
+        }
+      }
+
+
+    private def makePostCallWithExpectedResult(params: JsObject, expectedResult: String, expectedCode: Int) = {
+      val response = RestAssured.given()
+          .contentType("application/json\r\n")
+          .config(RestAssured.config().sslConfig(new SSLConfig().relaxedHTTPSValidation()))
+          .body(params.toString())
+          .post(deployActionURL)
+      assert(response.statusCode() == expectedCode)
+      response.body.asString should include(expectedResult)
+      response.body.asString.parseJson.asJsObject.getFields("activationId") should have length 1
+    }
+
+    private def verifyAction(action: RunResult, name: String, kindValue: JsString): Unit = {
+      val stdout = action.stdout
+      assert(stdout.startsWith(s"ok: got action $name\n"))
+      wsk.parseJsonString(stdout).fields("exec").asJsObject.fields("kind") shouldBe kindValue
+    }
 }
