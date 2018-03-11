@@ -5,26 +5,34 @@ SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 ROOTDIR="$SCRIPTDIR/../../.."
 WHISKDIR="$ROOTDIR/openwhisk"
 PACKAGESDIR="$WHISKDIR/catalog/extra-packages"
+IMAGE_PREFIX="testing"
+
+# Set Environment
+export OPENWHISK_HOME=$WHISKDIR
 
 cd $WHISKDIR
 
 tools/build/scanCode.py "$SCRIPTDIR/../.."
 
+
+# Build Openwhisk
+./gradlew distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
+
+docker pull ibmfunctions/action-nodejs-v8
+docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
+
+docker pull ibmfunctions/action-python-v3
+docker tag ibmfunctions/action-python-v3 ${IMAGE_PREFIX}/action-python-v3
+
 cd $WHISKDIR/ansible
 
-ANSIBLE_CMD="ansible-playbook -i environments/local"
+# Deploy Openwhisk
+ANSIBLE_CMD="ansible-playbook -i environments/local -e docker_image_prefix=${IMAGE_PREFIX}"
 
 $ANSIBLE_CMD setup.yml
 $ANSIBLE_CMD prereq.yml
 $ANSIBLE_CMD couchdb.yml
 $ANSIBLE_CMD initdb.yml
-
-cd $WHISKDIR
-
-./gradlew distDocker
-
-cd $WHISKDIR/ansible
-
 $ANSIBLE_CMD wipe.yml
 $ANSIBLE_CMD openwhisk.yml
 
@@ -48,7 +56,7 @@ export OPENWHISK_HOME=$WHISKDIR
 mkdir -p $PACKAGESDIR/preInstalled/ibm-functions
 cp -r $ROOTDIR/template-get-external-resource $PACKAGESDIR/preInstalled/ibm-functions/
 
-# Install the package
+# Install the deploy package
 cd $PACKAGESDIR/packageDeploy/packages
 source $PACKAGESDIR/packageDeploy/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 

@@ -53,7 +53,7 @@ class WeatherTests extends TestHelpers
     val nodejs6kind = JsString("nodejs:6")
     val pythonRuntimePath = "runtimes/python"
     val pythonfolder = "../runtimes/python/actions";
-    val pythonkind = JsString("python:2")
+    val pythonkind = JsString("python-jessie:3")
 
     // statuses from deployWeb
     val successStatus = """"status":"success""""
