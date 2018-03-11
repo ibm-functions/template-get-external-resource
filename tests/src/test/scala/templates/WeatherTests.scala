@@ -47,13 +47,13 @@ class WeatherTests extends TestHelpers
     //set parameters for deploy tests
     val node8RuntimePath = "runtimes/nodejs"
     val nodejs8folder = "../runtimes/nodejs/actions";
-    val nodejs8kind = JsString("nodejs:8")
+    val nodejs8kind = "nodejs:8"
     val node6RuntimePath = "runtimes/nodejs-6"
     val nodejs6folder = "../runtimes/nodejs-6/actions";
-    val nodejs6kind = JsString("nodejs:6")
+    val nodejs6kind = "nodejs:6"
     val pythonRuntimePath = "runtimes/python"
     val pythonfolder = "../runtimes/python/actions";
-    val pythonkind = JsString("python-jessie:3")
+    val pythonkind = "python-jessie:3"
 
     // statuses from deployWeb
     val successStatus = """"status":"success""""
@@ -75,7 +75,7 @@ class WeatherTests extends TestHelpers
       }
 
       val action = wsk.action.get(getExternalResourceActionPackage)
-      verifyAction(action, getExternalResourceActionPackage, nodejs8kind)
+      verifyAction(action, getExternalResourceActionPackage, JsString(nodejs8kind))
 
       // clean up after test
       wsk.action.delete(getExternalResourceActionPackage)
@@ -96,7 +96,7 @@ class WeatherTests extends TestHelpers
       }
 
       val action = wsk.action.get(getExternalResourceActionPackage)
-      verifyAction(action, getExternalResourceActionPackage, nodejs6kind)
+      verifyAction(action, getExternalResourceActionPackage, JsString(nodejs6kind))
 
       // clean up after test
       wsk.action.delete(getExternalResourceActionPackage)
@@ -117,7 +117,7 @@ class WeatherTests extends TestHelpers
       }
 
       val action = wsk.action.get(getExternalResourceActionPackage)
-      verifyAction(action, getExternalResourceActionPackage, pythonkind)
+      verifyAction(action, getExternalResourceActionPackage, JsString(pythonkind))
 
       // clean up after test
       wsk.action.delete(getExternalResourceActionPackage)
