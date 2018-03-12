@@ -43,6 +43,7 @@ class WeatherTests extends TestHelpers
     val getExternalResourceActionPackage = "myPackage/weather"
     val deployAction = "/whisk.system/deployWeb/wskdeploy"
     val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
+    val packageName = "myPackage"
 
     //set parameters for deploy tests
     val node8RuntimePath = "runtimes/nodejs"
@@ -65,7 +66,7 @@ class WeatherTests extends TestHelpers
       makePostCallWithExpectedResult(JsObject(
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(node8RuntimePath),
-        "envData" -> JsObject("PACKAGE_NAME" -> JsString("myPackage")),
+        "envData" -> JsObject("PACKAGE_NAME" -> JsString(packageName)),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
       ), successStatus, 200);
@@ -86,7 +87,7 @@ class WeatherTests extends TestHelpers
       makePostCallWithExpectedResult(JsObject(
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(node6RuntimePath),
-        "envData" -> JsObject("PACKAGE_NAME" -> JsString("myPackage")),
+        "envData" -> JsObject("PACKAGE_NAME" -> JsString(packageName)),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
       ), successStatus, 200);
@@ -107,7 +108,7 @@ class WeatherTests extends TestHelpers
       makePostCallWithExpectedResult(JsObject(
         "gitUrl" -> JsString(deployTestRepo),
         "manifestPath" -> JsString(pythonRuntimePath),
-        "envData" -> JsObject("PACKAGE_NAME" -> JsString("myPackage")),
+        "envData" -> JsObject("PACKAGE_NAME" -> JsString(packageName)),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
       ), successStatus, 200);
