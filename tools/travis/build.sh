@@ -4,30 +4,35 @@
 SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 ROOTDIR="$SCRIPTDIR/../../.."
 WHISKDIR="$ROOTDIR/openwhisk"
-DEPLOYDIR="$ROOTDIR/packageDeploy"
+PACKAGESDIR="$WHISKDIR/catalog/extra-packages"
+IMAGE_PREFIX="testing"
+
+# Set Environment
+export OPENWHISK_HOME=$WHISKDIR
 
 cd $WHISKDIR
 
 tools/build/scanCode.py "$SCRIPTDIR/../.."
 
+
+# Build Openwhisk
+./gradlew distDocker -PdockerImagePrefix=${IMAGE_PREFIX}
+
+docker pull ibmfunctions/action-nodejs-v8
+docker tag ibmfunctions/action-nodejs-v8 ${IMAGE_PREFIX}/action-nodejs-v8
+
+docker pull ibmfunctions/action-python-v3
+docker tag ibmfunctions/action-python-v3 ${IMAGE_PREFIX}/action-python-v3
+
 cd $WHISKDIR/ansible
 
-ANSIBLE_CMD="ansible-playbook -i environments/local"
+# Deploy Openwhisk
+ANSIBLE_CMD="ansible-playbook -i environments/local -e docker_image_prefix=${IMAGE_PREFIX}"
 
 $ANSIBLE_CMD setup.yml
 $ANSIBLE_CMD prereq.yml
 $ANSIBLE_CMD couchdb.yml
 $ANSIBLE_CMD initdb.yml
-
-cd $WHISKDIR
-
-./gradlew distDocker
-
-docker pull ibmfunctions/action-nodejs-v8
-docker tag ibmfunctions/action-nodejs-v8 whisk/action-nodejs-v8:latest
-
-cd $WHISKDIR/ansible
-
 $ANSIBLE_CMD wipe.yml
 $ANSIBLE_CMD openwhisk.yml
 
@@ -47,9 +52,13 @@ EDGE_HOST=$(grep '^edge.host=' $WHISKPROPS_FILE | cut -d'=' -f2)
 # Set Environment
 export OPENWHISK_HOME=$WHISKDIR
 
-# Install the package
-cd $DEPLOYDIR/packages
-source $DEPLOYDIR/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
+# Place this template in correct location to be included in packageDeploy
+mkdir -p $PACKAGESDIR/preInstalled/ibm-functions
+cp -r $ROOTDIR/template-get-external-resource $PACKAGESDIR/preInstalled/ibm-functions/
+
+# Install the deploy package
+cd $PACKAGESDIR/packageDeploy/packages
+source $PACKAGESDIR/packageDeploy/packages/installCatalog.sh $AUTH_KEY $EDGE_HOST $WSK_CLI
 
 # Test
 cd $ROOTDIR/template-get-external-resource
