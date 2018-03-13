@@ -39,7 +39,7 @@ class WeatherTests extends TestHelpers
   val wsk = new Wsk()
 
   val deployTestRepo = "https://github.com/ibm-functions/template-get-external-resource"
-  val getExternalResourceAction = "myPackage/weather"
+  val getExternalResourceAction = "weather"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL = s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
   val packageName = "myPackage"
@@ -62,65 +62,74 @@ class WeatherTests extends TestHelpers
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
   it should "create the nodejs 8 get external resource action from github url" in {
+    val nodejs8Package = packageName + "nodejs8"
+    val nodejs8GetResourceAction = nodejs8Package + "/" + getExternalResourceAction
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node8RuntimePath),
-      "envData" -> JsObject("PACKAGE_NAME" -> JsString(packageName)),
+      "envData" -> JsObject("PACKAGE_NAME" -> JsString(nodejs8Package)),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
 
-    withActivation(wsk.activation, wsk.action.invoke(getExternalResourceAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(nodejs8GetResourceAction)) {
       _.response.result.get.toString should include("temp")
     }
 
-    val action = wsk.action.get(getExternalResourceAction)
-    verifyAction(action, getExternalResourceAction, JsString(nodejs8kind))
+    val action = wsk.action.get(nodejs8GetResourceAction)
+    verifyAction(action, nodejs8GetResourceAction, JsString(nodejs8kind))
 
     // clean up after test
-    wsk.action.delete(getExternalResourceAction)
+    wsk.action.delete(nodejs8GetResourceAction)
   }
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
   it should "create the nodejs 6 get external resource action from github url" in {
+    val nodejs6Package = packageName + "nodejs8"
+    val nodejs6GetResourceAction = nodejs6Package + "/" + getExternalResourceAction
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(node6RuntimePath),
-      "envData" -> JsObject("PACKAGE_NAME" -> JsString(packageName)),
+      "envData" -> JsObject("PACKAGE_NAME" -> JsString(nodejs6Package)),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
 
-    withActivation(wsk.activation, wsk.action.invoke(getExternalResourceAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(nodejs6GetResourceAction)) {
       _.response.result.get.toString should include("temp")
     }
 
-    val action = wsk.action.get(getExternalResourceAction)
-    verifyAction(action, getExternalResourceAction, JsString(nodejs6kind))
+    val action = wsk.action.get(nodejs6GetResourceAction)
+    verifyAction(action, nodejs6GetResourceAction, JsString(nodejs6kind))
 
     // clean up after test
-    wsk.action.delete(getExternalResourceAction)
+    wsk.action.delete(nodejs6GetResourceAction)
   }
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
   it should "create the python get external resource action from github url" in {
+    val pythonPackage = packageName + "nodejs8"
+    val pythonGetResourceAction = pythonPackage + "/" + getExternalResourceAction
+
     makePostCallWithExpectedResult(JsObject(
       "gitUrl" -> JsString(deployTestRepo),
       "manifestPath" -> JsString(pythonRuntimePath),
-      "envData" -> JsObject("PACKAGE_NAME" -> JsString(packageName)),
+      "envData" -> JsObject("PACKAGE_NAME" -> JsString(pythonPackage)),
       "wskApiHost" -> JsString(wskprops.apihost),
       "wskAuth" -> JsString(wskprops.authKey)
     ), successStatus, 200);
 
-    withActivation(wsk.activation, wsk.action.invoke(getExternalResourceAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(pythonGetResourceAction)) {
       _.response.result.get.toString should include("temp")
     }
 
-    val action = wsk.action.get(getExternalResourceAction)
-    verifyAction(action, getExternalResourceAction, JsString(pythonkind))
+    val action = wsk.action.get(pythonGetResourceAction)
+    verifyAction(action, pythonGetResourceAction, JsString(pythonkind))
 
     // clean up after test
-    wsk.action.delete(getExternalResourceAction)
+    wsk.action.delete(pythonGetResourceAction)
   }
   /**
     * Test the nodejs 6 "Get External Resource" template
@@ -140,7 +149,7 @@ class WeatherTests extends TestHelpers
   }
 
   it should "invoke nodejs-6 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherNode6"
+    val name = "weatherNode6-2"
     val file = Some(new File(nodejs6folder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs6kind))
@@ -171,7 +180,7 @@ class WeatherTests extends TestHelpers
   }
 
   it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherNode8"
+    val name = "weatherNode8-2"
     val file = Some(new File(nodejs8folder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs8kind))
@@ -201,7 +210,7 @@ class WeatherTests extends TestHelpers
     }
   }
   it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherPython"
+    val name = "weatherPython-2"
     val file = Some(new File(pythonfolder, "weather.py").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(pythonkind))
