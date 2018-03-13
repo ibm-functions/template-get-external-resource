@@ -62,7 +62,8 @@ class WeatherTests extends TestHelpers
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
   it should "create the nodejs 8 get external resource action from github url" in {
-    val nodejs8Package = packageName + "nodejs8"
+    val timestamp: String = System.currentTimeMillis.toString
+    val nodejs8Package = packageName + timestamp
     val nodejs8GetResourceAction = nodejs8Package + "/" + getExternalResourceAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -86,7 +87,8 @@ class WeatherTests extends TestHelpers
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
   it should "create the nodejs 6 get external resource action from github url" in {
-    val nodejs6Package = packageName + "nodejs8"
+    val timestamp: String = System.currentTimeMillis.toString
+    val nodejs6Package = packageName + timestamp
     val nodejs6GetResourceAction = nodejs6Package + "/" + getExternalResourceAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -110,7 +112,8 @@ class WeatherTests extends TestHelpers
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
   it should "create the python get external resource action from github url" in {
-    val pythonPackage = packageName + "nodejs8"
+    val timestamp: String = System.currentTimeMillis.toString
+    val pythonPackage = packageName + timestamp
     val pythonGetResourceAction = pythonPackage + "/" + getExternalResourceAction
 
     makePostCallWithExpectedResult(JsObject(
@@ -135,7 +138,8 @@ class WeatherTests extends TestHelpers
     * Test the nodejs 6 "Get External Resource" template
     */
   it should "invoke nodejs-6 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherNode6"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "weatherNode6" + timestamp
     val file = Some(new File(nodejs6folder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs6kind))
@@ -149,7 +153,8 @@ class WeatherTests extends TestHelpers
   }
 
   it should "invoke nodejs-6 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherNode6-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "weatherNode6" + timestamp
     val file = Some(new File(nodejs6folder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs6kind))
@@ -166,7 +171,8 @@ class WeatherTests extends TestHelpers
     * Test the nodejs-8 "Get External Resource" template
     */
   it should "invoke nodejs-8 weather.js and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherNode8"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "weatherNode8" + timestamp
     val file = Some(new File(nodejs8folder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs8kind))
@@ -180,7 +186,8 @@ class WeatherTests extends TestHelpers
   }
 
   it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherNode8-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "weatherNode8" + timestamp
     val file = Some(new File(nodejs8folder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejs8kind))
@@ -197,7 +204,8 @@ class WeatherTests extends TestHelpers
     * Test the python "Get External Resource" template
     */
   it should "invoke weather.py and get the result" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherPython"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "weatherPython" + timestamp
     val file = Some(new File(pythonfolder, "weather.py").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(pythonkind))
@@ -210,7 +218,8 @@ class WeatherTests extends TestHelpers
     }
   }
   it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(wskprops) { (wp, assetHelper) =>
-    val name = "weatherPython-2"
+    val timestamp: String = System.currentTimeMillis.toString
+    val name = "weatherPython" + timestamp
     val file = Some(new File(pythonfolder, "weather.py").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(pythonkind))
