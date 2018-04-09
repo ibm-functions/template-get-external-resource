@@ -7,13 +7,14 @@
 # The action can be invoked using:
 # curl https://openwhisk.ng.bluemix.net/api/v1/web/<namespace>/openwhisk-get-external-resource/weather.json?location=<location>
 
-packages:
+project:
   namespace: _
-  $PACKAGE_NAME:
-    version: 1.0
-    license: Apache-2.0
-    actions:
-      weather:
-        web-export: true
-        function: actions/weather.py
-        runtime: python-jessie:3
+  packages:
+    $PACKAGE_NAME:
+      version: 1.0
+      license: Apache-2.0
+      actions:
+        weather:
+          web-export: true
+          function: actions/weather.py
+          runtime: python-jessie:3
