@@ -10,7 +10,8 @@
 *.iml
 *.idea
 
+# Eclipse
 .project
+.settings/
 .classpath
-.settings
 

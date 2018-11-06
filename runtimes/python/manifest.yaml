@@ -17,4 +17,4 @@ project:
         weather:
           web-export: true
           function: actions/weather.py
-          runtime: python-jessie:3
+          runtime: python:3.7

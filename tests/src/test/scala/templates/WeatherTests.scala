@@ -54,7 +54,7 @@ class WeatherTests
   val nodejs6kind = "nodejs:6"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python/actions";
-  val pythonkind = "python-jessie:3"
+  val pythonkind = "python:3.7"
 
   // statuses from deployWeb
   val successStatus = """"status": "success""""
