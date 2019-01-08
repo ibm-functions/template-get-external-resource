@@ -46,12 +46,9 @@ class WeatherTests
   val packageName = "myPackage"
 
   //set parameters for deploy tests
-  val node8RuntimePath = "runtimes/nodejs"
-  val nodejs8folder = "../runtimes/nodejs/actions";
-  val nodejs8kind = "nodejs:8"
-  val node6RuntimePath = "runtimes/nodejs-6"
-  val nodejs6folder = "../runtimes/nodejs-6/actions";
-  val nodejs6kind = "nodejs:6"
+  val nodejsRuntimePath = "runtimes/nodejs"
+  val nodejsfolder = "../runtimes/nodejs/actions";
+  val nodejskind = "nodejs:10"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python/actions";
   val pythonkind = "python:3.7"
@@ -62,16 +59,16 @@ class WeatherTests
   behavior of "Get External Resource Template"
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
-  it should "create the nodejs 8 get external resource action from github url" in {
+  it should "create the nodejs 10 get external resource action from github url" in {
     val timestamp: String = System.currentTimeMillis.toString
-    val nodejs8Package = packageName + timestamp
-    val nodejs8GetResourceAction = nodejs8Package + "/" + getExternalResourceAction
+    val nodejsPackage = packageName + timestamp
+    val nodejsGetResourceAction = nodejsPackage + "/" + getExternalResourceAction
 
     makePostCallWithExpectedResult(
       JsObject(
         "gitUrl" -> JsString(deployTestRepo),
-        "manifestPath" -> JsString(node8RuntimePath),
-        "envData" -> JsObject("PACKAGE_NAME" -> JsString(nodejs8Package)),
+        "manifestPath" -> JsString(nodejsRuntimePath),
+        "envData" -> JsObject("PACKAGE_NAME" -> JsString(nodejsPackage)),
         "wskApiHost" -> JsString(wskprops.apihost),
         "wskAuth" -> JsString(wskprops.authKey)
       ),
@@ -79,44 +76,15 @@ class WeatherTests
       200
     );
 
-    withActivation(wsk.activation, wsk.action.invoke(nodejs8GetResourceAction)) {
+    withActivation(wsk.activation, wsk.action.invoke(nodejsGetResourceAction)) {
       _.response.result.get.toString should include("temp")
     }
 
-    val action = wsk.action.get(nodejs8GetResourceAction)
-    verifyAction(action, nodejs8GetResourceAction, JsString(nodejs8kind))
+    val action = wsk.action.get(nodejsGetResourceAction)
+    verifyAction(action, nodejsGetResourceAction, JsString(nodejskind))
 
     // clean up after test
-    wsk.action.delete(nodejs8GetResourceAction)
-  }
-
-  // test to create the get external resource template from github url.  Will use preinstalled folder.
-  it should "create the nodejs 6 get external resource action from github url" in {
-    val timestamp: String = System.currentTimeMillis.toString
-    val nodejs6Package = packageName + timestamp
-    val nodejs6GetResourceAction = nodejs6Package + "/" + getExternalResourceAction
-
-    makePostCallWithExpectedResult(
-      JsObject(
-        "gitUrl" -> JsString(deployTestRepo),
-        "manifestPath" -> JsString(node6RuntimePath),
-        "envData" -> JsObject("PACKAGE_NAME" -> JsString(nodejs6Package)),
-        "wskApiHost" -> JsString(wskprops.apihost),
-        "wskAuth" -> JsString(wskprops.authKey)
-      ),
-      successStatus,
-      200
-    );
-
-    withActivation(wsk.activation, wsk.action.invoke(nodejs6GetResourceAction)) {
-      _.response.result.get.toString should include("temp")
-    }
-
-    val action = wsk.action.get(nodejs6GetResourceAction)
-    verifyAction(action, nodejs6GetResourceAction, JsString(nodejs6kind))
-
-    // clean up after test
-    wsk.action.delete(nodejs6GetResourceAction)
+    wsk.action.delete(nodejsGetResourceAction)
   }
 
   // test to create the get external resource template from github url.  Will use preinstalled folder.
@@ -149,50 +117,15 @@ class WeatherTests
   }
 
   /**
-    * Test the nodejs 6 "Get External Resource" template
-    */
-  it should "invoke nodejs-6 weather.js and get the result" in withAssetCleaner(
-    wskprops) { (wp, assetHelper) =>
-    val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherNode6" + timestamp
-    val file = Some(new File(nodejs6folder, "weather.js").toString());
-    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs6kind))
-    }
-
-    withActivation(wsk.activation,
-                   wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
-      activation =>
-        activation.response.success shouldBe true
-        activation.response.result.get.toString should include("temp")
-    }
-  }
-
-  it should "invoke nodejs-6 weather.js without input and get weather for Vermont" in withAssetCleaner(
-    wskprops) { (wp, assetHelper) =>
-    val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherNode6" + timestamp
-    val file = Some(new File(nodejs6folder, "weather.js").toString());
-    assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs6kind))
-    }
-
-    withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
-      activation.response.success shouldBe true
-      activation.response.result.get.toString should include("temp")
-    }
-  }
-
-  /**
     * Test the nodejs-8 "Get External Resource" template
     */
-  it should "invoke nodejs-8 weather.js and get the result" in withAssetCleaner(
+  it should "invoke nodejs 10 weather.js and get the result" in withAssetCleaner(
     wskprops) { (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherNode8" + timestamp
-    val file = Some(new File(nodejs8folder, "weather.js").toString());
+    val name = "weatherNodeJS" + timestamp
+    val file = Some(new File(nodejsfolder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs8kind))
+      action.create(name, file, kind = Some(nodejskind))
     }
 
     withActivation(wsk.activation,
@@ -203,13 +136,13 @@ class WeatherTests
     }
   }
 
-  it should "invoke nodejs-8 weather.js without input and get weather for Vermont" in withAssetCleaner(
+  it should "invoke nodejs 10 weather.js without input and get weather for Vermont" in withAssetCleaner(
     wskprops) { (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherNode8" + timestamp
-    val file = Some(new File(nodejs8folder, "weather.js").toString());
+    val name = "weatherNodeJS" + timestamp
+    val file = Some(new File(nodejsfolder, "weather.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
-      action.create(name, file, kind = Some(nodejs8kind))
+      action.create(name, file, kind = Some(nodejskind))
     }
 
     withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
