@@ -77,7 +77,7 @@ class WeatherTests
     );
 
     withActivation(wsk.activation, wsk.action.invoke(nodejsGetResourceAction)) {
-      _.response.result.get.toString should include("temp")
+      _.response.result.get.toString should include("location")
     }
 
     val action = wsk.action.get(nodejsGetResourceAction)
@@ -106,7 +106,7 @@ class WeatherTests
     );
 
     withActivation(wsk.activation, wsk.action.invoke(pythonGetResourceAction)) {
-      _.response.result.get.toString should include("temp")
+      _.response.result.get.toString should include("location")
     }
 
     val action = wsk.action.get(pythonGetResourceAction)
@@ -132,7 +132,7 @@ class WeatherTests
                    wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
       activation =>
         activation.response.success shouldBe true
-        activation.response.result.get.toString should include("temp")
+        activation.response.result.get.toString should include("location")
     }
   }
 
@@ -147,7 +147,7 @@ class WeatherTests
 
     withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
       activation.response.success shouldBe true
-      activation.response.result.get.toString should include("temp")
+      activation.response.result.get.toString should include("location")
     }
   }
 
@@ -168,7 +168,7 @@ class WeatherTests
         wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
         activation =>
           activation.response.success shouldBe true
-          activation.response.result.get.toString should include("temp")
+          activation.response.result.get.toString should include("location")
       }
   }
   it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(
@@ -182,7 +182,7 @@ class WeatherTests
 
     withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
       activation.response.success shouldBe true
-      activation.response.result.get.toString should include("temp")
+      activation.response.result.get.toString should include("location")
     }
   }
 
