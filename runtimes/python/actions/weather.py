@@ -16,10 +16,9 @@ def main(params):
     if 'location' not in params:
         params.update({'location': 'Austin'})
     location = params['location']
-    url = ("https://query.yahooapis.com/v1/public/yql?q=select item.condition from weather.forecast "
-    """where woeid in (select woeid from geo.places(1) where text='%s')&format=json""" % location)
-    r = requests.get(url)
-    print(r.json()['query']['results']['channel']['item']['condition'])
+    url = "https://httpbin.org/anything?location=%s" % location
+    headers = {'accept': 'application/json'}
+    r = requests.get(url,headers)
     if r.status_code != 200:
         return {
             'statusCode': r.status_code,
@@ -27,13 +26,8 @@ def main(params):
             'body': {'message': 'Error procesisng your request'}
         }
     else:
-        # The response body contains temperature data in the following format
-        #   { code: '28',
-        #   date: 'Tue, 26 Dec 2017 12:00 PM EST',
-        #   temp: '18',
-        #   text: 'Mostly Cloudy' } }
         return {
             'statusCode': 200,
             'headers': { 'Content-Type': 'application/json'},
-            'body': r.json()['query']['results']['channel']['item']['condition']
+            'body': {'location': r.json()['args']['location']}
         }

@@ -6,17 +6,17 @@
   "url": "https://github.com/ibm-functions/template-get-external-resource",
   "runtimes": [
     {
-      "name": "Node.js 6",
-      "kind": "nodejs:6",
+      "name": "Node.js 10",
+      "kind": "nodejs:10",
       "type": "nodejs"
     },
     {
       "name": "Python 3",
-      "kind": "python:3",
-      "type": "python",
-    },
+      "kind": "python:3.7",
+      "type": "python"
+    }
   ],
   "categories": [
-    "nodejs",
+    "nodejs"
   ]
 }

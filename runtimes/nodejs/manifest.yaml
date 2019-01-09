@@ -17,4 +17,4 @@ project:
         weather:
           web-export: true
           function: actions/weather.js
-          runtime: nodejs:8
+          runtime: nodejs:10
