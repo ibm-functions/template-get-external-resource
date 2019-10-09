@@ -30,7 +30,7 @@ import spray.json.DefaultJsonProtocol._
 import spray.json._
 
 @RunWith(classOf[JUnitRunner])
-class WeatherTests
+class LocationTests
     extends TestHelpers
     with WskTestHelpers
     with BeforeAndAfterAll {
@@ -38,9 +38,9 @@ class WeatherTests
   implicit val wskprops = WskProps()
   val wsk = new Wsk()
 
-  val deployTestRepo =
-    "https://github.com/ibm-functions/template-get-external-resource"
-  val getExternalResourceAction = "weather"
+  // FIXME - once merged into upstream repo the URL must be set to: "https://github.com/ibm-functions/template-get-external-resource"
+  val deployTestRepo = "https://github.com/reggeenr/template-get-external-resource/tree/issue/adapt-http-get-sample"
+  val getExternalResourceAction = "location"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL =
     s"https://${wskprops.apihost}/api/v1/web${deployAction}.http"
@@ -118,30 +118,30 @@ class WeatherTests
   }
 
   /**
-    * Test the nodejs-8 "Get External Resource" template
+    * Test the nodejs-10 "Get External Resource" template
     */
-  it should "invoke nodejs 10 weather.js and get the result" in withAssetCleaner(
+  it should "invoke nodejs 10 location.js and get the result" in withAssetCleaner(
     wskprops) { (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherNodeJS" + timestamp
-    val file = Some(new File(nodejsfolder, "weather.js").toString());
+    val name = "locationNodeJS" + timestamp
+    val file = Some(new File(nodejsfolder, "location.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejskind))
     }
 
-    withActivation(wsk.activation,
-                   wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
+    withActivation(wsk.activation, wsk.action.invoke(name, Map("location" -> "Paris".toJson))) {
       activation =>
         activation.response.success shouldBe true
         activation.response.result.get.toString should include("location")
+        activation.response.result.get.toString should include("Paris")
     }
   }
 
-  it should "invoke nodejs 10 weather.js without input and get weather for Vermont" in withAssetCleaner(
+  it should "invoke nodejs 10 weather.js without input and get location for Austin" in withAssetCleaner(
     wskprops) { (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherNodeJS" + timestamp
-    val file = Some(new File(nodejsfolder, "weather.js").toString());
+    val name = "locationNodeJS" + timestamp
+    val file = Some(new File(nodejsfolder, "location.js").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(nodejskind))
     }
@@ -149,17 +149,18 @@ class WeatherTests
     withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
       activation.response.success shouldBe true
       activation.response.result.get.toString should include("location")
+      activation.response.result.get.toString should include("Austin")
     }
   }
 
   /**
     * Test the python "Get External Resource" template
     */
-  it should "invoke weather.py and get the result" in withAssetCleaner(wskprops) {
+  it should "invoke location.py and get the result" in withAssetCleaner(wskprops) {
     (wp, assetHelper) =>
       val timestamp: String = System.currentTimeMillis.toString
-      val name = "weatherPython" + timestamp
-      val file = Some(new File(pythonfolder, "weather.py").toString());
+      val name = "locationPython" + timestamp
+      val file = Some(new File(pythonfolder, "location.py").toString());
       assetHelper.withCleaner(wsk.action, name) { (action, _) =>
         action.create(name, file, kind = Some(pythonkind))
       }
@@ -170,13 +171,14 @@ class WeatherTests
         activation =>
           activation.response.success shouldBe true
           activation.response.result.get.toString should include("location")
+        activation.response.result.get.toString should include("Paris")
       }
   }
-  it should "invoke weather.py without input and get weather for Vermont" in withAssetCleaner(
+  it should "invoke location.py without input and get location for Austin" in withAssetCleaner(
     wskprops) { (wp, assetHelper) =>
     val timestamp: String = System.currentTimeMillis.toString
-    val name = "weatherPython" + timestamp
-    val file = Some(new File(pythonfolder, "weather.py").toString());
+    val name = "locationPython" + timestamp
+    val file = Some(new File(pythonfolder, "location.py").toString());
     assetHelper.withCleaner(wsk.action, name) { (action, _) =>
       action.create(name, file, kind = Some(pythonkind))
     }
@@ -184,6 +186,7 @@ class WeatherTests
     withActivation(wsk.activation, wsk.action.invoke(name)) { activation =>
       activation.response.success shouldBe true
       activation.response.result.get.toString should include("location")
+      activation.response.result.get.toString should include("Austin")
     }
   }
 
