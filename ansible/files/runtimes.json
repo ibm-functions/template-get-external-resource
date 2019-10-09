@@ -31,38 +31,6 @@
                     "attachmentType": "text/plain"
                 }
             }
-        ],
-        "swift": [
-            {
-                "kind": "swift:4.2",
-                "default": true,
-                "image": {
-                    "name": "action-swift-v4.2",
-                    "prefix": "ibmfunctions",
-                    "tag": "latest"
-                },
-                "deprecated": false,
-                "attached": {
-                    "attachmentName": "codefile",
-                    "attachmentType": "text/plain"
-                }
-            }
-        ],
-        "php": [
-            {
-                "kind": "php:7.3",
-                "default": true,
-                "deprecated": false,
-                "image": {
-                    "name": "action-php-v7.2",
-                    "prefix": "openwhisk",
-                    "tag": "latest"
-                },
-                "attached": {
-                    "attachmentName": "codefile",
-                    "attachmentType": "text/plain"
-                }
-            }
         ]
     },
     "blackboxes": [
