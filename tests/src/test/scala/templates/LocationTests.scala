@@ -40,7 +40,7 @@ class LocationTests
 
   // FIXME - once merged into upstream repo the URL must be set to: "https://github.com/ibm-functions/template-get-external-resource"
   val deployTestRepo =
-    "https://github.com/reggeenr/template-get-external-resource/tree/issue/adapt-http-get-sample"
+    "https://github.com/reggeenr/template-get-external-resource"
   val getExternalResourceAction = "location"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL =
