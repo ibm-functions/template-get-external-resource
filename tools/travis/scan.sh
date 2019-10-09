@@ -9,7 +9,7 @@ WHISKDIR="$HOMEDIR/openwhisk"
 
 export OPENWHISK_HOME=${OPENWHISK_HOME:=$WHISKDIR}
 
-OPENWHISK_UTILS_HOME=${HOMEDIR}/incubator-openwhisk-utilities
+OPENWHISK_UTILS_HOME=${HOMEDIR}/openwhisk-utilities
 OPENWHISK_SCANCODE_CFG=${ROOTDIR}/tools/build/scanCode.cfg
 
 cd ${ROOTDIR}

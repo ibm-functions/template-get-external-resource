@@ -15,7 +15,7 @@ IMAGE_PREFIX="openwhisk"
 
 # Deploy OpenWhisk
 cd $OPENWHISK_HOME/ansible
-ANSIBLE_CMD="ansible-playbook -i environments/local -e docker_image_prefix=${IMAGE_PREFIX}"
+ANSIBLE_CMD="ansible-playbook -i environments/local -e docker_image_prefix=${IMAGE_PREFIX} -e docker_image_tag=nightly"
 $ANSIBLE_CMD setup.yml
 $ANSIBLE_CMD prereq.yml
 $ANSIBLE_CMD couchdb.yml
