@@ -20,5 +20,5 @@ mkdir -p ${PREINSTALL_DIR}/ibm-functions/template-get-external-resource
 cp -a ${ROOTDIR}/runtimes ${PREINSTALL_DIR}/ibm-functions/template-get-external-resource/
 
 # Install the deploy package
-cd $HOMEDIR/incubator-openwhisk-package-deploy/packages
+cd $HOMEDIR/openwhisk-package-deploy/packages
 ./installCatalog.sh $WSK_SYSTEM_AUTH_KEY $WHISK_APIHOST $WSK_CLI
