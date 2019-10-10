@@ -7,7 +7,7 @@ import requests
 # https://{APIHOST}/api/v1/web/{QUALIFIED ACTION NAME}?location=Austin
 #
 # For example:
-# https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/get-resource/weather?location=Austin
+# https://openwhisk.ng.bluemix.net/api/v1/web/myusername@us.ibm.com_myspace/get-http-resource/location?location=Austin
 #
 # In this case, the params variable will look like:
 # { "location": "Austin" }
@@ -23,7 +23,7 @@ def main(params):
         return {
             'statusCode': r.status_code,
             'headers': { 'Content-Type': 'application/json'},
-            'body': {'message': 'Error procesisng your request'}
+            'body': {'message': 'Error processing your request'}
         }
     else:
         return {
