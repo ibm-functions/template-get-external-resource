@@ -38,9 +38,8 @@ class LocationTests
   implicit val wskprops = WskProps()
   val wsk = new Wsk()
 
-  // FIXME - once merged into upstream repo the URL must be set to: "https://github.com/ibm-functions/template-get-external-resource"
   val deployTestRepo =
-    "https://github.com/reggeenr/template-get-external-resource"
+    "https://github.com/ibm-functions/template-get-external-resource"
   val getExternalResourceAction = "location"
   val deployAction = "/whisk.system/deployWeb/wskdeploy"
   val deployActionURL =
