@@ -17,4 +17,4 @@ project:
         location:
           web-export: true
           function: actions/location.py
-          runtime: python:3.7
+          runtime: python:3.9
