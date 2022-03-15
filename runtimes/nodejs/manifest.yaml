@@ -17,4 +17,4 @@ project:
         location:
           web-export: true
           function: actions/location.js
-          runtime: nodejs:10
+          runtime: nodejs:12

@@ -49,10 +49,10 @@ class LocationTests
   //set parameters for deploy tests
   val nodejsRuntimePath = "runtimes/nodejs"
   val nodejsfolder = "../runtimes/nodejs/actions";
-  val nodejskind = "nodejs:10"
+  val nodejskind = "nodejs:12"
   val pythonRuntimePath = "runtimes/python"
   val pythonfolder = "../runtimes/python/actions";
-  val pythonkind = "python:3.7"
+  val pythonkind = "python:3.9"
 
   // statuses from deployWeb
   val successStatus = """"status": "success""""
